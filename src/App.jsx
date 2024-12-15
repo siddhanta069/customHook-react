@@ -1,7 +1,8 @@
-import {useState} from "react"
+import {useState, useEffect} from "react"
 import {useFetch} from "./hooks/useFetch"
 import {usePrev} from "./hooks/use-prev"
-
+import {useDebounce} from "./hooks/use-Debounce"
+ 
 function App() {
     // const [currentPosts, setCurrentPosts] = useState(1)
     // const {finalData, loading} = useFetch("https://jsonplaceholder.typicode.com/posts/" + currentPosts)
@@ -21,16 +22,45 @@ function App() {
     //     </div>
     // )
 
-    const [count, setCount] = useState(0)
-    const prev = usePrev(count)
+    // const [count, setCount] = useState(0)
+    // const prev = usePrev(count)
+
+    // return (
+    //     <div>
+    //         <p>{count}</p>
+    //         <button onClick={() => setCount(count + 1)}>click me</button>
+    //         <p>The previous value was {prev}</p>
+    //     </div>
+    // )
 
     return (
-        <div>
-            <p>{count}</p>
-            <button onClick={() => setCount(count + 1)}>click me</button>
-            <p>The previous value was {prev}</p>
-        </div>
+        <>
+        <App1/>
+        </>
     )
 }
+
+
+function App1() {
+    const [inputVal, setInputVal]=useState("");
+    const debouncedVal = useDebounce(inputVal, 30)
+
+    function change(e) {
+        setInputVal(e.target.value)
+
+    }
+
+    useEffect(() => {
+        console.log("expensive operation")
+
+    }, [debouncedVal])
+    
+    return (
+        <>
+        <input type="text" onChange={change}></input>
+        </>
+    )
+}
+
 
 export default App; 
